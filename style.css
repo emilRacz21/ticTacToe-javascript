@@ -1,0 +1,49 @@
+body {
+  background-color: beige;
+}
+div {
+  text-align: center;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 40px;
+}
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  width: 300px;
+  height: 300px;
+  margin: 50px auto;
+}
+
+.cell {
+  cursor: pointer;
+  background-color: rgb(159, 159, 159);
+  font-size: 90px;
+  text-align: center;
+  border: 1px solid black;
+  width: 120px;
+  height: 120px;
+}
+.cell:hover {
+  background-color: grey;
+}
+.wynik {
+  text-align: center;
+  font-size: 30px;
+}
+.restart-game {
+  background-color: rgb(174, 174, 174);
+  font-size: 25px;
+  margin: 70px;
+  cursor: pointer;
+  width: 110px;
+}
+.restart-game:hover {
+  background-color: beige;
+}
+.center {
+  justify-content: center;
+  text-align: center;
+}
