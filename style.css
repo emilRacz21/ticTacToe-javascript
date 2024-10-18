@@ -1,49 +1,103 @@
+html,
 body {
-  background-color: beige;
-}
-div {
-  text-align: center;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  font-size: 40px;
-}
-.game-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-gap: 10px;
-  width: 300px;
-  height: 300px;
-  margin: 50px auto;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  height: 100%;
+  margin: 0;
+  background-color: rgb(7, 33, 58);
 }
 
-.cell {
+h2 {
+  font-weight: 900;
+  color: white;
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+table {
+  background-color: rgb(23, 47, 67);
+  border-radius: 20px;
+  box-shadow: 1px 20px 5px 10px rgb(10, 29, 42);
+  border-collapse: separate;
+  border-spacing: 2rem;
+}
+
+td {
+  text-shadow: 10px 10px 10px rgb(20, 33, 44);
+  transition: 0.4s all;
   cursor: pointer;
-  background-color: rgb(159, 159, 159);
-  font-size: 90px;
+  background-color: rgb(21, 55, 74);
+  box-shadow: 1px 20px 5px rgb(10, 29, 42);
+  border-radius: 30px;
+  width: 10rem;
+  height: 10rem;
   text-align: center;
-  border: 1px solid black;
-  width: 120px;
-  height: 120px;
+  color: rgb(240, 248, 255);
+  font-size: 0rem;
 }
-.cell:hover {
-  background-color: grey;
+
+td:hover {
+  transform: scale(0.9);
 }
-.wynik {
-  text-align: center;
-  font-size: 30px;
+
+.active {
+  animation: rotate 1s forwards;
 }
-.restart-game {
-  background-color: rgb(174, 174, 174);
-  font-size: 25px;
-  margin: 70px;
-  cursor: pointer;
-  width: 110px;
+
+@keyframes rotate {
+  0% {
+    transform: rotateY(0deg) scale(0.9);
+    font-size: 3rem;
+  }
+  50% {
+    transform: rotateY(180deg) scale(0.9);
+    font-size: 7rem;
+  }
+  100% {
+    transform: rotateY(180deg) scale(0.9);
+    background-color: rgba(18, 44, 58, 0.527);
+    font-size: 7rem;
+  }
 }
-.restart-game:hover {
-  background-color: beige;
-}
-.center {
+
+#game-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
+  align-items: center;
+}
+
+#player-turn {
+  display: flex;
+  padding: 3rem;
+  padding-top: 0rem;
+}
+.player {
+  transition: 0.3s ease;
+  box-shadow: 1px 20px 5px rgb(10, 29, 42);
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  align-items: center;
+  padding: 1rem 3em;
+  background-color: rgb(23, 47, 67);
+  border-radius: 20px;
+}
+.player h2 {
+  margin: 0;
+  font-size: 3rem;
+}
+.player a {
+  margin-top: 1rem;
+  color: white;
+}
+.player p {
+  font-size: 4rem;
+  margin: 0;
+  color: rgb(255, 255, 255);
 }

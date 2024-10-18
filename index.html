@@ -5,24 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gra kółko i krzyżyk</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div>Kółko i krzyżyk</div>
+    <div id="game-container">
+      <div id="player-turn">
+        <div class="player">
+          <a>PLAYER</a>
+          <h2 style="color: rgb(49, 162, 203)">X</h2>
 
-    <div class="game-grid">
-      <div class="cell" data-index="0"></div>
-      <div class="cell" data-index="1"></div>
-      <div class="cell" data-index="2"></div>
-      <div class="cell" data-index="3"></div>
-      <div class="cell" data-index="4"></div>
-      <div class="cell" data-index="5"></div>
-      <div class="cell" data-index="6"></div>
-      <div class="cell" data-index="7"></div>
-      <div class="cell" data-index="8"></div>
+          <p class="player-points">0</p>
+        </div>
+        <div class="player">
+          <a>PLAYER</a>
+          <h2 style="color: rgb(217, 200, 67)">O</h2>
+
+          <p class="player-points">0</p>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <td id="0"></td>
+          <td id="1"></td>
+          <td id="2"></td>
+        </tr>
+        <tr>
+          <td id="3"></td>
+          <td id="4"></td>
+          <td id="5"></td>
+        </tr>
+        <tr>
+          <td id="6"></td>
+          <td id="7"></td>
+          <td id="8"></td>
+        </tr>
+      </table>
     </div>
-    <div class="center"><button class="restart-game">Reset</button></div>
-    <div class="points1"></div>
-    <div class="points2"></div>
     <script src="script.js"></script>
   </body>
 </html>
