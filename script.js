@@ -1,204 +1,137 @@
-//deklaracja zmiennych do operacji na liczbach.
-let firstNum = "",
-  secondNum = "",
-  result;
-
-//flaga sprawdzająca czy operator dodawania, odejmowania itd został już wybrany.
-let operatorSelected = false;
-
-//pobieranie elementów z strony html
-let tablice = document.querySelectorAll("td");
-let previousNumber = document.getElementById("second-num");
-let firstNumber = document.getElementById("first-num");
-let operator = document.getElementById("operator");
-let HistoryText = document.getElementById("result-text");
-let newElementHistory;
-let DeleteLastElHis = document.getElementById("clear-history");
-let pElement;
-let showHistory = document.getElementById("show-history");
-let historyTable = document.getElementById("history-table");
-let closeHistory = document.getElementById("close-history");
-showHistory.addEventListener("click", () => {
-  historyTable.classList.toggle("active");
-});
-closeHistory.addEventListener("click", () => {
-  historyTable.classList.toggle("active");
-});
-//nasłuch na elementy tablicy (cyfry , dodawania, odejmowanie, znak równości).
-tablice.forEach((e) => {
-  e.addEventListener("click", operations);
-});
-
-//funkcja obsługująca konwersję procentów na liczbę zmiennoprzecinkową.
-convertPercentToFloat = (num) => {
-  if (num.includes("%")) {
-    num = num.slice(0, -1);
-    return parseFloat(num) / 100;
+//Początkowy gracz.
+currentPlayer = "X";
+//Kombinacja wygranych...
+winningVariants = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+//Przechowywanie punktacji dla gracza "X" oraz "O"
+let [pointsX, pointsO] = [0, 0];
+//Pobranie elementów z dokumentu html...
+let cells = document.querySelectorAll("td");
+let playerScore = document.querySelectorAll(".player");
+let playerPoints = document.querySelectorAll(".player-points");
+//Utworzenie tablicy do sprawdzania wyników...
+let board = Array(9).fill("");
+//metoda rozpoczynająca grę
+beginGame = (event) => {
+  //sprawdzenie czy event zawiera juz element "X" lub "O"
+  if (["X", "O"].some((value) => event.target.textContent.includes(value))) {
+    return;
+  } else {
+    //wywolanie metody do zmiany kolorów graczy, oraz do zmiany gracza po kliknieiu w komórkę
+    currentPlayer = setColorAndSwitchPlayer(event, currentPlayer);
+    event.target.innerHTML = currentPlayer;
+    board[event.target.id] = currentPlayer;
+    //metoda która ciągle sprawdza czy kombinacja wygranych została trafiona
+    checkWinner();
   }
-  return parseFloat(num);
+  //Animacja planszy po kliku...
+  animBoard(event);
 };
 
-//wykonanie funkcji do obslugi kliknięć na elementy tablicy.
-function operations(e) {
-  //wartość klikniętego elementu.
-  let value = e.target.textContent;
-
-  //sprawdza czy kliknięta wartość jest cyfrą, procentem (tylko jeśli nie ma już procentu) lub kropką (tylko jeśli nie ma już kropki).
-  if (
-    (value >= "0" && value <= "9") ||
-    (value == "%" && !firstNum.includes("%")) ||
-    (value == "." && !firstNum.includes("."))
-  ) {
-    if (firstNum == "" && value == ".") {
-      firstNumber.textContent = "0";
-    }
-    if (firstNum == "" && value == "%") {
-      return;
-    }
-
-    pElement = document.createElement("p");
-    pElement.classList.add("active");
-    pElement.append(value);
-    firstNumber.append(pElement);
-    firstNum = firstNumber.textContent;
+setColorAndSwitchPlayer = (event, player) => {
+  //Przechowanie w obiekcie koloru dla gracza "X" oraz "O"
+  const colors = {
+    X: "rgb(217, 200, 67)",
+    O: "rgb(49, 162, 203)",
+  };
+  if (currentPlayer == "X") {
+    //animacja pokazujaca czyj teraz jest ruch...
+    setBoxAnim(1, 0);
+  } else if (currentPlayer == "O") {
+    setBoxAnim(0, 1);
   }
-
-  //sprawdza, czy kliknięto operator (i upewnia się, że operator nie został jeszcze wybrany).
-  if (!operatorSelected && ["+", "-", "x", "÷"].includes(value)) {
-    previousNumber.classList.add("active-operator");
-    operator.classList.add("active-operator");
-    if (firstNum != "") {
-      secondNum = firstNum;
-      firstNum = "";
-      firstNumber.textContent = "";
-      operator.innerHTML = value;
-      previousNumber.innerHTML = secondNum;
-      operatorSelected = true;
-    }
-  }
-
-  //sprawdza, czy kliknięto przycisk do potęgowania (x²).
-  if (value == "x²") {
-    //jeśli pierwszy numer zawiera procent, nie wykonuj operacji.
-    if (firstNum.includes("%")) {
-      return;
-    } else {
-      //oblicza kwadrat pierwszego numeru i wyświetla wynik.
-      firstNum = Math.pow(firstNum, 2).toString();
-      firstNumber.textContent = firstNum;
-    }
-  }
-
-  //sprawdza, czy kliknięto przycisk do usunięcia danych.
-  if (value == "del") {
-    firstNumber.classList.remove("active-operator");
-    previousNumber.classList.remove("active-operator");
-    operator.classList.remove("active-operator");
-    previousNumber.classList.add("delete");
-    firstNumber.classList.add("delete");
-    operator.classList.add("delete");
-    previousNumber.addEventListener(
-      "animationend",
-      () => {
-        secondNum = "";
-        firstNum = "";
-        firstNumber.innerHTML = "";
-        previousNumber.innerHTML = "";
-        operator.innerHTML = "";
-        operatorSelected = false;
-        previousNumber.classList.remove("delete");
-        firstNumber.classList.remove("delete");
-        operator.classList.remove("delete");
-      },
-      { once: true }
-    );
-  }
-
-  //sprawdza, czy pierwszy numer jest nieskończonością.
-  if (firstNum == Infinity) {
-    firstNumber.textContent = "za duza wartosc";
-    secondNum = "";
-    firstNum = "";
-    previousNumber.innerHTML = "";
-    operator.innerHTML = "";
-    return;
-  }
-
-  //sprawdza, czy kliknięto przycisk "=" (równa się).
-  if (value == "=") {
-    firstNumber.classList.add("active-operator");
-    previousNumber.classList.remove("active-operator");
-    operator.classList.remove("active-operator");
-    operatorSelected = false;
-    if (firstNum.includes("%") || secondNum.includes("%")) {
-      firstNum = convertPercentToFloat(firstNum);
-      secondNum = convertPercentToFloat(secondNum);
-    }
-    if (firstNum == "0" && operator.innerHTML == "÷") {
-      firstNumber.innerHTML = "dziel przez 0";
-      previousNumber.innerHTML = "";
-      operator.innerHTML = "";
-      return 0;
-    }
-
-    //wykonanie operacji na podstawie wybranego operatora.
-    if (secondNum != "" && firstNum != "") {
-      switch (operator.innerHTML) {
-        case "+":
-          result = (parseFloat(firstNum) + parseFloat(secondNum)).toFixed(2);
-          break;
-        case "x":
-          result = (parseFloat(firstNum) * parseFloat(secondNum)).toFixed(2);
-          break;
-        case "÷":
-          result = (parseFloat(secondNum) / parseFloat(firstNum)).toFixed(2);
-          break;
-        case "-":
-          result = (parseFloat(secondNum) - parseFloat(firstNum)).toFixed(2);
-          break;
-      }
-
-      //wyświetl wynik i zapisz operacji w historii.
-      firstNumber.textContent = result;
-      newElementHistory = document.createElement("div");
-      newElementHistory.innerHTML =
-        secondNum + " " + operator.innerHTML + " " + firstNum + " = " + result;
-      HistoryText.append(newElementHistory);
-      firstNum = result;
-      secondNum = "";
-      operator.innerHTML = "";
-      previousNumber.innerHTML = "";
-    } else {
-      console.log("error");
-      firstNumber.textContent = "";
-    }
-  }
-
-  //sprawdza czy kliknięto przycisk "c" - czyści ostatni dodany znak.
-  if (value == "c") {
-    //pElement.classList.add("delete");
-    if (result != "") firstNum = "";
-    if (firstNumber.textContent == "") {
-      firstNumber.textContent = "";
-    } else {
-      firstNumber.lastChild.classList.add("delete");
-      firstNumber.addEventListener(
-        "animationend",
-        () => {
-          firstNum = firstNum.slice(0, -1);
-          firstNumber.lastChild.remove();
-        },
-        { once: true }
-      );
-    }
-  }
-}
-
-//wydarzenie obsługujące usuwanie ostatniego elementu (dziecka) należącego do div o id = clearHistory.
-DeleteLastElHis.addEventListener("click", () => {
-  //sprawdzenie czy  historyText nie jest puste.
-  if (HistoryText.innerHTML != "") {
-    //Usuwanie ostatnego dodanego elementu należącego do parent o id = clearHistory.
-    HistoryText.lastChild.remove();
-  }
+  event.target.style.color = colors[player];
+  return player === "X" ? "O" : "X";
+};
+//Dla wszytskich komórek cell...
+cells.forEach((cell) => {
+  //Uruchom metode beginGame()
+  cell.addEventListener("click", beginGame);
 });
+
+//Metoda sprawdzajaca czy dany gracz jest na wygrywających komórkach.
+checkWinner = () => {
+  for (i = 0; i < winningVariants.length; i++) {
+    //Destruktaryzacja tablicy...
+    let [a, b, c] = winningVariants[i];
+    //Warunek sprawdzajacy czy czy dany gracz wygrał grę.
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      //Jeśli tak to zresetuj plansze.
+      restartGame();
+      if (currentPlayer == "X") {
+        //Dodaj punkty jesli gracz "X" wygrał.
+        pointsX++;
+        playerPoints[0].innerHTML = pointsX;
+      }
+      if (currentPlayer == "O") {
+        //Dodaj punkty jeśli gracz "O" wygrał.
+        pointsO++;
+        playerPoints[1].innerHTML = pointsO;
+      }
+    } else if (!board.includes("")) {
+      /*Jeśli w tablicy sprawdzajacej wyniki nie ma pustego stringa, 
+      czyli cała plansza jest zapełniona zresetuj grę i nie dodawaj punktów*/
+      restartGame();
+    }
+  }
+};
+//Metoda do resetu gry.
+restartGame = () => {
+  cells.forEach((cell) => {
+    //Usuń obsluge klikania na puste komórki
+    cell.removeEventListener("click", beginGame);
+    //Interval stworzony aby wszytskie komórki z klasa active mogły zostać zresetowane
+    let interval = setInterval(() => {
+      cell.innerHTML = "";
+      if (cell.className == "active") {
+        cell.style = "";
+        cell.classList.remove("active");
+      }
+      //Po sekundzie wyczyść interval
+      clearInterval(interval);
+      //Dodaj obsługę klikania na wszyatkie juz wyczyszczone komórki
+      cell.addEventListener("click", beginGame);
+      getBoardColor();
+    }, 1000);
+  });
+  //Wypełnij tablice pustym stringiem
+  board = board.fill("");
+};
+//Animacja wystepująca po kliknieciu w komórkę
+animBoard = (event) => {
+  //Dodanie klasy active do kliknietej komórki
+  event.target.classList.add("active");
+  event.target.addEventListener("animationend", () => {
+    //Po wykonanej animacji zrob tranfsorm kliknietej komórki...
+    event.target.style.transform = "rotateY(180deg) scale(0.9)";
+    //Zmień kolor komórki...
+    event.target.style.backgroundColor = "rgba(18, 44, 58, 0.527)";
+  });
+};
+//Ustawia kolory planszy, zmienia kolor nieparzystych pól.
+getBoardColor = () => {
+  Array.from(cells.keys())
+    .filter((e) => e % 2 == 0)
+    .forEach((event) => {
+      //Zmień kolor nieparzystych komórek
+      cells[event].style.backgroundColor = "rgb(10, 33, 41)";
+    });
+};
+//Animacja która pokazuje czyj teraz jest aktualny ruch...
+setBoxAnim = (num1, num2) => {
+  playerScore.item(num1).style.transform = "scale(0.8)";
+  playerScore.item(num1).style.backgroundColor = "rgb(10, 33, 41)";
+  playerScore.item(num2).style.backgroundColor = " rgb(23, 47, 67)";
+  playerScore.item(num2).style.transform = "scale(1)";
+};
+//Ustaw kolory planszy...
+getBoardColor();
+setBoxAnim(0, 1);
