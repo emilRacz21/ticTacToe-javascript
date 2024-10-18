@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gra kółko i krzyżyk</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
       rel="stylesheet"
     />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
   </head>
   <body>
-    <div id="game-container">
-      <div id="player-turn">
-        <div class="player">
-          <a>PLAYER</a>
-          <h2 style="color: rgb(49, 162, 203)">X</h2>
-
-          <p class="player-points">0</p>
+    <div id="container">
+      <div id="table-container">
+        <div id="calc-screen">
+          <p id="show-history">History</p>
+          <p id="second-num"></p>
+          <p id="operator"></p>
+          <p id="first-num"></p>
         </div>
-        <div class="player">
-          <a>PLAYER</a>
-          <h2 style="color: rgb(217, 200, 67)">O</h2>
-
-          <p class="player-points">0</p>
-        </div>
+        <table id="number-table">
+          <tr>
+            <td>%</td>
+            <td data-id="special">c</td>
+            <td>÷</td>
+            <td data-id="special">del</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>x</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>+</td>
+          </tr>
+          <tr>
+            <td>x²</td>
+            <td>0</td>
+            <td>.</td>
+            <td data-id="equals">=</td>
+          </tr>
+        </table>
       </div>
-      <table>
-        <tr>
-          <td id="0"></td>
-          <td id="1"></td>
-          <td id="2"></td>
-        </tr>
-        <tr>
-          <td id="3"></td>
-          <td id="4"></td>
-          <td id="5"></td>
-        </tr>
-        <tr>
-          <td id="6"></td>
-          <td id="7"></td>
-          <td id="8"></td>
-        </tr>
-      </table>
+    </div>
+    <div id="history-table">
+      <div id="history-text">History</div>
+      <div id="result-text"></div>
+      <div id="btn-history">
+        <button class="btn" id="clear-history">Delete last</button>
+        <button class="btn" id="close-history">Close</button>
+      </div>
     </div>
     <script src="script.js"></script>
   </body>
