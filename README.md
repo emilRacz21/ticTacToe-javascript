@@ -2,6 +2,8 @@
 
 This repository contains a simple Tic Tac Toe game implemented in JavaScript, HTML, and CSS. The game allows two players, "X" and "O," to take turns playing on a 3x3 grid, with the objective of placing three of their marks in a horizontal, vertical, or diagonal row.
 
+* [Tic Tac Toe Game](https://tic-tac-toe-er.netlify.app/)
+
 ## Features
 
 - Two-player gameplay.
