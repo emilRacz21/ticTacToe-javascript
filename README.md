@@ -62,8 +62,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## Design
 
-![TicTacToe](https://github.com/user-attachments/assets/8b0b19e7-4a4d-4e1e-8f89-38d40244bf67)
-
+![TicTacToe](https://github.com/user-attachments/assets/496c3fab-97d7-442c-998a-35917f56d4a5)
 
 ## License
 
